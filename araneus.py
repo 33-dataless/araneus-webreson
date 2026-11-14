@@ -1,12 +1,22 @@
+
 import asyncio
+import logging
+
 from src.logger import configure_logging
-from service.manager import Manager
+from cli.cli import Cli
+
 
 async def main():
     configure_logging()
 
-    manager = Manager(domain="sushinadom-75.ru")
-    await manager.runtime()
-    
+    cli = Cli()
+    await cli.run()
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("\n[!] Interrupted")
+    except Exception:
+        logging.exception("Araneus execution failed")

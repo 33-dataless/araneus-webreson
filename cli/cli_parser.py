@@ -1,5 +1,3 @@
-import argparse
-
 
 import argparse
 
@@ -7,19 +5,40 @@ import argparse
 class Parser:
     def __init__(self):
         self.parser = argparse.ArgumentParser(
-            description="Araneus CLI"
+            prog="araneus",
+            description="Araneus domain scanner"
         )
 
-        self.parser.add_argument(
+        action = self.parser.add_mutually_exclusive_group(required=True)
+
+        action.add_argument(
             "-d", "--domain",
             help="Domain to scan"
         )
-
-        self.parser.add_argument(
+        action.add_argument(
             "--add-tool",
-            nargs="+",
-            metavar=("NAME", "EXECUTABLE", "ARGS"),
-            help="Add custom tool: NAME EXECUTABLE [ARGS...]"
+            nargs=argparse.REMAINDER,
+            metavar="ARGS",
+            help="Add tool: NAME EXECUTABLE [ARGS...]"
+        )
+        action.add_argument(
+            "--list-tools",
+            action="store_true"
+        )
+        action.add_argument(
+            "--delete-tool",
+            metavar="ID"
+        )
+        action.add_argument(
+            "--edit-tool",
+            metavar="ID"
+        )
+
+        # Дополнительный флаг, совместимый с -d
+        self.parser.add_argument(
+            "--sudo",
+            action="store_true",
+            help="Run Araneus with root privileges"
         )
 
     def parse(self):

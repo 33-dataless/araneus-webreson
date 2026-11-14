@@ -7,3 +7,5 @@ class ToolModel(BaseModel):
     name: str = Field(min_length=1)
     executable: str = Field(min_length=1)
     args: list[str]
+    required: list[str] = Field(default_factory=list)
+    requires_root: bool = False
